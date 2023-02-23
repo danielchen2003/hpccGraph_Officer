@@ -3,7 +3,7 @@
     "code": "0742",
     "company": "SWARGANGA TEMPLE OF MUSIC INC. (15059180), Georgia",
     "officer":"ADWAIT JOSHI",
-    "score":100
+    "score":300
   },
   {
     "code": "0749",
@@ -65,6 +65,34 @@
     "company": "Concrete Work Contractors",
     "officer":"Apurva Adwait Joshi",
     "score":30
+  },{
+    "code": "1771",
+    "company": "new 199",
+    "officer":"Apurva Adwait Joshi",
+    "score":50
+  },
+  {
+    "code": "1771",
+    "company": "new 199",
+    "officer":"Apurva Adwait Joshi",
+    "score":50
+  },{
+    "code": "1771",
+    "company": "new 199",
+    "officer":"Apurva Adwait Joshi",
+    "score":50
+  },
+  {
+    "code": "1771",
+    "company": "new 199",
+    "officer":"Apurva Adwait Joshi",
+    "score":50
+  },
+  {
+    "code": "1771",
+    "company": "test555",
+    "officer":"Apurva Adwait Joshi",
+    "score":10
   }
   
 ]

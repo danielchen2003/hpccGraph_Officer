@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { Graph2, GraphReactT  } from "@hpcc-js/graph";
 import { Palette } from "@hpcc-js/common";
 import { Vertex4, CentroidVertex4 } from "@hpcc-js/react";
-
 import "../styles/HPCC.css"
 import testData from '../test_data_transactions.json'
 
@@ -224,21 +223,21 @@ function HPCC_Graph() {
                     vertexObj.centroid = false
                     vertexObj.iconText = "fa-credit-card"
                     vertexObj.iconBackgroundColor= "rgb(170, 7, 107)";
-                    vertexObj.tooltip = `Merchant Name: ${currentElement.text} Merchant Address: ${currentElement.address} Merchant City: ${currentElement.city} Merchant State: ${currentElement.state} Merchnat Zip: ${currentElement.zip} Transaction Amount: ${currentElement.amount}`
+                    vertexObj.tooltip = `Merchant Name: ${currentElement.text} \n Merchant Address: ${currentElement.address} \n Merchant City: ${currentElement.city} \n  Merchant State: ${currentElement.state} \n Merchnat Zip: ${currentElement.zip} \n Transaction Amount: ${currentElement.amount}`
 
                 }
                 if(currentElement.type === ('merchant_category')){
                     vertexObj.centroid = true
                     vertexObj.iconText = "fa-institution" 
                     vertexObj.iconBackgroundColor= "rgb(0, 167, 81)"
-                    vertexObj.tooltip = `Merchant Code: ${currentElement.code} Merchant Category: ${currentElement.text} Transaction Amount: ${currentElement.amount}`
+                    vertexObj.tooltip = `Merchant Code: ${currentElement.code} \n Merchant Category: ${currentElement.text} \n Transaction Amount: ${currentElement.amount}`
                     
                 }
                 if(currentElement.type === ('merchant_desc')){
                     vertexObj.centroid = true
                     vertexObj.iconText = "fa-money"
                     vertexObj.iconBackgroundColor= "rgb(24, 90, 157)"
-                    vertexObj.tooltip = `Transaction Code: ${currentElement.code} Transaction Description: ${currentElement.text} Transaction Amount: ${currentElement.amount}`
+                    vertexObj.tooltip = `Transaction Code: ${currentElement.code}  \n Transaction Description: ${currentElement.text} \n Transaction Amount: ${currentElement.amount}`
 
                 }
                 if(currentElement.type === ('container')){
@@ -248,7 +247,7 @@ function HPCC_Graph() {
                 }
 
                 console.log((currentElement.noTransactions * 100) / maxNoTransactions)
-
+               
                 
 
                 if(currentElement.linkTo){
@@ -271,13 +270,15 @@ function HPCC_Graph() {
                     newEdgesList.push(linkObj)
 
                 }
-
+                console.log("======================================")
+                
+                console.log(vertexObj)
 
                 newVertexesList.push(vertexObj);
             }
 
-            console.log(newEdgesList)
-            // console.log(newVertexesList)
+            // console.log(newEdgesList)
+            console.log(newVertexesList)
 
             
             resolve({vertices: newVertexesList, edges: newEdgesList})
@@ -287,17 +288,18 @@ function HPCC_Graph() {
     const displayGraph = (rawData) => {
 
         new Graph2()
+        .centroidRenderer(CentroidVertex4)
+        .vertexRenderer(Vertex4)
         .wasmFolder("/")
         .minScale(0.1)
         .layout("Hierarchy")
-        .centroidRenderer(CentroidVertex4)
-        .vertexRenderer(Vertex4)
+        
         .tooltipWidth(220)
         .tooltipHeight(148)
         // .on("vertex_mousein", (vertex, col, sel, anno) => console.log("vertex_mousein", vertex, anno))
         // .on("vertex_mouseout", (vertex, col, sel, anno) => console.log("vertex_mouseout", vertex, anno))
         // .on("vertex_mouseover", (vertex, col, sel, anno) => console.log("vertex_mouseover", vertex, anno))
-        .on("vertex_click", (vertex, col, sel, anno) => console.log("vertex_click", vertex, anno, col, sel))
+        // .on("vertex_click", (vertex, col, sel, anno) => console.log("vertex_click", vertex, anno, col, sel))
         // .on("vertex_dblclick", (vertex, col, sel, anno) => console.log("vertex_dblclick", vertex, anno))
         .target("target")
         .data({
@@ -350,32 +352,32 @@ function HPCC_Graph() {
         // This function only expects for an array which has the neccessary information in each of its elements. 
         // an example array 
 
-        const sample = [
-            {
-                "id": 0,
-                "text": "Christopher Jones",
-                "name": "Christopher Jones",
-                "type": "merchant_name",
-                "amount": 835.33
-            },
-            {
-                "id": 1,
-                "text": "Family Dollar",
-                "linkTo": "variety stores",
-                "name": "Family Dollar",
-                "type": "merchant_name",
-                "amount": -22.860000000000003
-            },
-            {
-                "id": 2,
-                "text": "Roku For Hulu Llc",
-                "linkTo": "cable, satellite and other pay television and radio services",
-                "name": "Roku For Hulu Llc",
-                "type": "merchant_name",
-                "amount": -1,
-                "address": "816-2728107  Us"
-            },
-        ]
+        // const sample = [
+        //     {
+        //         "id": 0,
+        //         "text": "Christopher Jones",
+        //         "name": "Christopher Jones",
+        //         "type": "merchant_name",
+        //         "amount": 835.33
+        //     },
+        //     {
+        //         "id": 1,
+        //         "text": "Family Dollar",
+        //         "linkTo": "variety stores",
+        //         "name": "Family Dollar",
+        //         "type": "merchant_name",
+        //         "amount": -22.860000000000003
+        //     },
+        //     {
+        //         "id": 2,
+        //         "text": "Roku For Hulu Llc",
+        //         "linkTo": "cable, satellite and other pay television and radio services",
+        //         "name": "Roku For Hulu Llc",
+        //         "type": "merchant_name",
+        //         "amount": -1,
+        //         "address": "816-2728107  Us"
+        //     },
+        // ]
 
         // text is the text to be shown in the graph
         // linkTo is the 'name' property in the same list which the current node has connection to 

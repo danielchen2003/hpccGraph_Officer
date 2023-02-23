@@ -136,7 +136,7 @@ function RinGraph() {
 
 function greyAnno(text, padding = 5, yOffset = -1) {
     return {
-        text: text + "",
+        text:  "fuck you",
         fill: "#555555",
         stroke: "#555555",
         textFill: "#ffffff",
@@ -146,7 +146,7 @@ function greyAnno(text, padding = 5, yOffset = -1) {
 }
 function dAnno() {
     return {
-        text: "D",
+        text: "you die",
         fill: "#ED1C24",
         stroke: "#ED1C24",
         textFill: "#ffffff",
@@ -157,7 +157,7 @@ function dAnno() {
 }
 function exclamationAnno(padding, yOffset) {
     return {
-        text: "",
+        text: "asdsad",
         fill: "#ED1C24",
         stroke: "#ED1C24",
         textFill: "#ffffff",
@@ -168,7 +168,7 @@ function exclamationAnno(padding, yOffset) {
 }
 function checkmarkAnno(padding, yOffset) {
     return {
-        text: "",
+        text: "fffzzz",
         fill: "#00802B",
         stroke: "#00802B",
         textFill: "#ffffff",
@@ -188,7 +188,9 @@ graphData.edges = vertices.slice(1).map((n, i) => {
     };
 });
 const displayGraph = (graphData) => {
-  new Graph2()
+  console.log(graphData)
+  
+  const a = new Graph2()
       .centroidRenderer(CentroidVertex3)
       .vertexRenderer(Vertex3)
       .target("target")
@@ -198,8 +200,16 @@ const displayGraph = (graphData) => {
       .centroidColor("#777777")
       .forceDirectedAlphaDecay(0.003)
       .layout("ForceDirected")
+      .vertexIconFontFamily("FontAwesome")
       .edgeArcDepth(0)
-      .transitionDuration(0)
+      .zoomDuration(220)
+      .zoomToFit(true)
+      .zoomToFitLimit(55)
+      .transitionDuration(0)    
+      .render()
+      
+      console.log(a)
+      
   }
   
     

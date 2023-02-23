@@ -2,51 +2,93 @@ import React, { useEffect, useState } from 'react'
 import { Graph2, GraphReactT  } from "@hpcc-js/graph";
 import { Palette } from "@hpcc-js/common";
 import { Vertex4, CentroidVertex4 } from "@hpcc-js/react";
+import { CentroidVertex3, Vertex3 } from "@hpcc-js/react";
 import dummyData from '../test_data_officer.json'
 
 import "../styles/HPCC.css"
 
 function OfficersRelationshipGraph() {
 
-  // const [graphData, setGraphData] = useState(null);
+  // const [graphData, setGraphData] = useState(undefined);
 
   
   
   function createVerticesAndEdges(data, i = 1) {
+    return new Promise((resolve, reject) => {
     const vertices = []
-    const root = {id: 0,text: "ADWAIT JOSHI", company: "DATASEERS INC", Score: null,officer:"ADWAIT JOSHI"}
+  //   const root = {id: 0,text: "ADWAIT JOSHI", company: "DATASEERS INC", score: undefined, officer:"ADWAIT JOSHI" , centroid :true ,iconText:"fa-institution", shapeOffsetY
+  //   : -55 ,iconOffsetY: 1, iconPadding: 52, iconBackgroundColor : "rgb(0, 167, 81)",iconFontColor: "#ffffff", annotations : [{
+  //     fill: "#555555",
+  //     stroke: "#555555",
+  //     textFill: "#ffffff",
+  //     imageChar: "12",
+  //     height: 16,
+  //     imageFontFamily: "Arial",
+  //     padding: 6,
+  //     xOffset: -1,
+  //     yOffset: 1
+  // }]}
+
+  //test categoryID: 0,textFontFamily: "monospace"
+  const root = {id: 0,text: "ADWAIT JOSHI", company: "DATASEERS INC", score: undefined, officer:"ADWAIT JOSHI" , centroid :true ,categoryID: 0, textFontFamily: "monospace",  tooltip :`Merchant Name:  \n Merchant Address:  \n Merchant City: \n  Merchant State: ` ,
+  annotations : [{
+    fill: "#555555",
+    stroke: "#555555",
+    textFill: "#ffffff",
+    imageChar: "12",
+    height: 20,
+    imageFontFamily: "Arial",
+    padding: 6,
+    xOffset: -1,
+    yOffset: 1
+}]}
+  
+  
+  
     vertices.push(root)
     
     
     for (const curentOfficerInfo of data) {
       let tempObj = {}
-      if (curentOfficerInfo.company) {
-        tempObj.text= curentOfficerInfo.company
-      }
-      tempObj.officer = curentOfficerInfo.officer ? curentOfficerInfo.officer  : null
-      tempObj.Score = curentOfficerInfo.o ? curentOfficerInfo.officer  : null
-      tempObj.id = i++
       
+      tempObj.text= curentOfficerInfo.company ?  curentOfficerInfo.company : undefined
+      tempObj.officer = curentOfficerInfo.officer ? curentOfficerInfo.officer  : undefined
+      tempObj.score = curentOfficerInfo.score ? curentOfficerInfo.score  : undefined
+      tempObj.id = i++
+      tempObj.tooltip = `Executive Name: ${curentOfficerInfo.officer ? curentOfficerInfo.officer  : ""}` + "\n" + `Company Name: ${  curentOfficerInfo.company ?  curentOfficerInfo.company: ''}` + "\n" + `Score: ${curentOfficerInfo.score ? curentOfficerInfo.score  : "" }`
+
+      tempObj.categoryID = 1
+      tempObj.annotations = [{
+        fill: "#555555",
+        stroke: "#555555",
+        textFill: "#ffffff",
+        imageChar: "12",
+        height: 20,
+        imageFontFamily: "Arial",
+        padding: 6,
+        xOffset: -1,
+        yOffset: 1
+    }]
+
       vertices.push(tempObj)
     }
     const graphData = { vertices };
     
     graphData.edges = vertices.slice(1).map((n, i) => {
+      
+      
       return {
           id: i,
           source: graphData.vertices[0], //zhixiang yi
           target: graphData.vertices[i + 1], //mubiao +1 meiyige dou zhibian
-          strokeWidth: i + 1
+          strokeWidth: Math.ceil(graphData.vertices[i+1].score / 10 ) > 10 ? 10 : Math.ceil(graphData.vertices[i+1].score / 10 )
       };
   });
-    
-    return graphData
+  resolve(graphData)
+  })
+    // return graphData
 }
-const graphData = createVerticesAndEdges(dummyData) 
 
-
-
-console.log(graphData)
 
 
 
@@ -57,13 +99,7 @@ console.log(graphData)
 //   })
 // }
   
-  useEffect(() => {
-    return () => {
-    createVerticesAndEdges(dummyData)
-    displayGraph(graphData)
-    }
-  },[])
-    
+  
   
 //   useEffect( ()=> {
 //     console.log('my effect is running');
@@ -76,7 +112,7 @@ console.log(graphData)
   
 //   const data = {
 //     vertices: [
-//         {id: 0,text: "ADWAIT JOSHI",Score: null,officer:"ADWAIT JOSHI", iconText :"fa-credit-card"},
+//         {id: 0,text: "ADWAIT JOSHI",Score: undefined,officer:"ADWAIT JOSHI", iconText :"fa-credit-card"},
 //         {id: 1,text: "DATASEERS TECHNOLOGIES PRIVATE LIMITED (U72901MH2019FTC323491), India",score: 50, offier:"ADWAIT ASHOK JOSHI1" },
 //         {id: 2,text: "	JOSHI OIL AND GAS PRIVATE LIMITED (U23200MH1998PTC115630), India" ,score: 80, offier:"ADWAIT AVINASH JOSHI" },
 //         {id: 3,text: "HYGIENITY SOLUTIONS PRIVATE LIMITED (U74999PN2021PTC203096), India" ,score: 40, offier:"ADWAIT PRASAD JOSHI" },
@@ -92,19 +128,60 @@ console.log(graphData)
 // console.log(data);
 
 const displayGraph = (rawData) =>{
-  new Graph2()
+  
+  
+  
+
+  
+   new Graph2()
+    
     .categories([
-        {id:0,imageChar:"fa-user"},
-        {id:1,imageChar:"fa-building"}
+        {id:0,imageChar:"fa-user", imageCharFill: "#2ecc71"},
+        {id:1,imageChar:"fa-building",imageCharFill: "#34495e"}
     ])
-    .data(rawData)
+    .data({
+      vertices: rawData.vertices,
+      edges: rawData.edges
+  })
+    .centroidColor("#777777")
     .target("target")
-    .layout("ForceDirected")
+    .layout("Neato")
+    .minScale(0.6)
+    .maxScale(1.2)
+    .forceDirectedAlphaDecay(0.003)
+    .centroidColor("#123214")
+    .transitionDuration(0)
+    .tooltipWidth(300)
+    .vertexIconFontFamily("FontAwesome")
+    .tooltipHeight(180)
+    .allowDragging(false)
+    // .graphOptions({})
+    
+    // .graphOptions.layout({
+    //   fit: true,
+    //   type: 'concentric',
+    //   padding: 30
+    // })
+    
+    // .zoomToFitLimit(115)
+    // .edgeArcDepth(0)
+    // .transitionDuration(0)
     .applyScaleOnLayout(true)
     .render()
-    ;
+    
   
 } 
+
+useEffect(() => {
+  return  async () => {
+  const graphData = await createVerticesAndEdges(dummyData)
+  console.log(graphData)
+  
+  displayGraph(graphData)
+  }
+},[])
+  
+
 
   
   
